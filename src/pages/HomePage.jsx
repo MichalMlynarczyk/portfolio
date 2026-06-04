@@ -1,7 +1,12 @@
 import novaDermPreview from '../images/image.png'
 import engineeringPreview from '../images/image copy 13.png'
 
-const CV_FILE = '/cv-michal-mlynarczyk.pdf'
+const cvFiles = import.meta.glob('../cv/*.pdf', {
+    eager: true,
+    query: '?url',
+    import: 'default',
+})
+const CV_FILE = Object.entries(cvFiles).sort(([firstPath], [secondPath]) => firstPath.localeCompare(secondPath))[0]?.[1]
 const HOME_NAME_TEXT = 'Michał Młynarczyk'
 const HOME_ROLE_TEXT = 'Informatyka • AI • Embedded Systems'
 const HOME_DESCRIPTION_TEXT =
