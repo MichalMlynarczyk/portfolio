@@ -3,6 +3,7 @@ import blogScreen from '../images/image copy.png'
 import contactScreen from '../images/image copy 2.png'
 import reviewsScreen from '../images/image copy 3.png'
 import mobileScreen from '../images/image copy 4.png'
+import { LanguageSwitch } from '../components/LanguageSwitch.jsx'
 
 const PROFILE_NAME = 'Michał Młynarczyk'
 const NOVADERM_PREVIEW_URL = 'http://72.62.117.246:5173/home'
@@ -41,29 +42,72 @@ const SCREENSHOTS = [
         image: reviewsScreen,
     },
 ]
+const NOVADERM_EN = {
+    nav: ['Projects', 'About', 'Skills', 'Contact'],
+    homeAria: 'Home page',
+    back: 'Back to projects',
+    category: 'Client project',
+    summary: 'Website for a laser hair removal studio with a CMS panel and Docker configuration.',
+    intro: 'A responsive website/application prepared for a studio specializing in laser hair removal. The project combines an elegant user interface with a CMS backend, API, blog, pricing, and contact form.',
+    preview: 'View project preview',
+    statusTitle: 'Project ready as a preview version',
+    statusText: 'The project has not yet been published in its final form on the client side, so below I show a working preview and selected screens from the current version.',
+    features: [
+        'Dynamic home page managed through a CMS',
+        'Admin panel for editing content',
+        'Offer and pricing module with treatment categories',
+        'Blog with categories, articles, and related posts',
+        'Contact form with saved submissions',
+        'Social widgets and client reviews',
+        'Docker Compose configuration for frontend and backend',
+        'Map, contact details, and CTA section',
+    ],
+    technologies: 'Technologies',
+    descriptionTitle: 'Project description',
+    paragraphs: [
+        'NovaDerm is a website for a laser hair removal studio, designed to present the offer elegantly and build trust in the brand. The home page uses beauty-industry aesthetics: a bright background, elegant photos, subtle animations, and clear CTAs leading to pricing or booking.',
+        'The CMS backend makes it easy to manage content, the blog, the offer, pricing, and contact forms.',
+    ],
+    processTitle: 'Delivery process',
+    process: [
+        'Client needs analysis and preparation of the site structure',
+        'UI/UX design and implementation of a responsive React + Tailwind frontend',
+        'CMS integration and creation of content models',
+        'Docker environment configuration and preview deployment',
+    ],
+    screensTitle: 'Selected screens',
+    screens: ['Home page', 'Blog', 'Contact', 'Client reviews'],
+    screenAlt: 'NovaDerm project screen',
+    info: 'Full access to the admin panel and all subpages is available in the preview version.',
+    previous: 'Previous project',
+    next: 'Next project',
+}
 
-export function NovaDermPage(){
+export function NovaDermPage({ language, onLanguageChange }){
+    const isEnglish = language === 'en'
+
     return(
         <main className="min-h-screen bg-[#061018] text-slate-100">
             <div className="relative isolate overflow-hidden">
                 <BackgroundLines />
-                <SiteHeader />
-                <HeroSection />
-                <StatusSection />
-                <TechnologySection />
-                <DetailsSection />
-                <ProjectNavigation />
+                <SiteHeader language={language} onLanguageChange={onLanguageChange} isEnglish={isEnglish} />
+                <HeroSection isEnglish={isEnglish} />
+                <StatusSection isEnglish={isEnglish} />
+                <TechnologySection isEnglish={isEnglish} />
+                <DetailsSection isEnglish={isEnglish} />
+                <ProjectNavigation isEnglish={isEnglish} />
             </div>
         </main>
     )
 }
 
-function SiteHeader(){
+function SiteHeader({ language, onLanguageChange, isEnglish }){
+    const labels = isEnglish ? NOVADERM_EN.nav : ['Projekty', 'O mnie', 'Umiejętności', 'Kontakt']
     const navItems = [
-        { label: 'Projekty', href: '/#projects', isActive: true },
-        { label: 'O mnie', href: '/#about' },
-        { label: 'Umiejętności', href: '/#skills' },
-        { label: 'Kontakt', href: '/#contact' },
+        { label: labels[0], href: '/#projects', isActive: true },
+        { label: labels[1], href: '/#about' },
+        { label: labels[2], href: '/#skills' },
+        { label: labels[3], href: '/#contact' },
     ]
 
     return(
@@ -72,7 +116,7 @@ function SiteHeader(){
                 <a
                     href="/"
                     className="group inline-flex items-center gap-4 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-4 focus:ring-offset-[#061018]"
-                    aria-label="Strona główna"
+                    aria-label={isEnglish ? NOVADERM_EN.homeAria : 'Strona główna'}
                 >
                     <span className="flex h-9 w-9 items-center justify-center rounded-md border border-cyan-300/70 bg-cyan-300/10 text-sm font-bold text-cyan-200 shadow-[0_0_24px_rgba(34,211,238,0.16)]">
                         MM
@@ -97,12 +141,13 @@ function SiteHeader(){
                         </a>
                     ))}
                 </div>
+                <LanguageSwitch language={language} onLanguageChange={onLanguageChange} />
             </nav>
         </header>
     )
 }
 
-function HeroSection(){
+function HeroSection({ isEnglish }){
     return(
         <section className="px-5 pb-8 pt-12 sm:px-6 sm:pt-16 lg:pb-12 lg:pt-20">
             <div className="mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-[0.86fr_1.14fr] lg:items-center">
@@ -112,22 +157,20 @@ function HeroSection(){
                         className="inline-flex items-center gap-3 text-sm font-bold text-slate-300 transition hover:gap-4 hover:text-cyan-200 focus:outline-none focus:ring-2 focus:ring-cyan-200 focus:ring-offset-4 focus:ring-offset-[#061018]"
                     >
                         <ArrowLeftIcon />
-                        Wróć do projektów
+                        {isEnglish ? NOVADERM_EN.back : 'Wróć do projektów'}
                     </a>
 
                     <p className="mt-12 text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                        Projekt dla klienta
+                        {isEnglish ? NOVADERM_EN.category : 'Projekt dla klienta'}
                     </p>
                     <h1 className="mt-5 text-5xl font-extrabold leading-tight text-white sm:text-6xl">
                         NovaDerm
                     </h1>
                     <p className="mt-6 max-w-xl text-xl font-semibold leading-8 text-slate-200">
-                        Strona internetowa dla gabinetu depilacji laserowej z panelem CMS i konfiguracją Docker.
+                        {isEnglish ? NOVADERM_EN.summary : 'Strona internetowa dla gabinetu depilacji laserowej z panelem CMS i konfiguracją Docker.'}
                     </p>
                     <p className="mt-6 max-w-xl text-base leading-8 text-slate-400">
-                        Responsywna strona/aplikacja przygotowana dla gabinetu specjalizującego się
-                        w depilacji laserowej. Projekt łączy elegancki interfejs użytkownika
-                        z zapleczem CMS, API, blogiem, cennikiem i formularzem kontaktowym.
+                        {isEnglish ? NOVADERM_EN.intro : 'Responsywna strona/aplikacja przygotowana dla gabinetu specjalizującego się w depilacji laserowej. Projekt łączy elegancki interfejs użytkownika z zapleczem CMS, API, blogiem, cennikiem i formularzem kontaktowym.'}
                     </p>
 
                     <div className="mt-7 flex flex-wrap gap-2.5">
@@ -148,7 +191,7 @@ function HeroSection(){
                             rel="noreferrer"
                             className="inline-flex min-h-12 items-center justify-center gap-3 rounded-md bg-cyan-300 px-6 text-sm font-extrabold text-[#061018] shadow-[0_18px_42px_rgba(34,211,238,0.24)] transition hover:-translate-y-0.5 hover:bg-cyan-200 focus:outline-none focus:ring-2 focus:ring-cyan-200 focus:ring-offset-4 focus:ring-offset-[#061018]"
                         >
-                            Zobacz podgląd projektu
+                            {isEnglish ? NOVADERM_EN.preview : 'Zobacz podgląd projektu'}
                             <ExternalLinkIcon />
                         </a>
                     </div>
@@ -187,7 +230,9 @@ function DevicePreview(){
     )
 }
 
-function StatusSection(){
+function StatusSection({ isEnglish }){
+    const features = isEnglish ? NOVADERM_EN.features : NOVADERM_STATUS_FEATURES
+
     return(
         <section className="px-5 py-3 sm:px-6">
             <div className="mx-auto grid w-full max-w-6xl gap-8 rounded-lg border border-cyan-100/10 bg-slate-950/24 p-6 shadow-[0_28px_80px_rgba(0,0,0,0.22)] backdrop-blur sm:p-8 lg:grid-cols-[0.75fr_1.25fr]">
@@ -196,15 +241,14 @@ function StatusSection(){
                         Status
                     </p>
                     <h2 className="mt-4 text-2xl font-extrabold leading-tight text-white sm:text-3xl">
-                        Projekt gotowy jako wersja podglądowa
+                        {isEnglish ? NOVADERM_EN.statusTitle : 'Projekt gotowy jako wersja podglądowa'}
                     </h2>
                     <p className="mt-6 text-base leading-8 text-slate-400">
-                        Projekt nie został jeszcze opublikowany w finalnej formie po stronie klienta,
-                        dlatego poniżej pokazuję działający podgląd oraz wybrane ekrany obecnej wersji.
+                        {isEnglish ? NOVADERM_EN.statusText : 'Projekt nie został jeszcze opublikowany w finalnej formie po stronie klienta, dlatego poniżej pokazuję działający podgląd oraz wybrane ekrany obecnej wersji.'}
                     </p>
                 </div>
                 <ul className="grid gap-4 sm:grid-cols-2">
-                    {NOVADERM_STATUS_FEATURES.map((feature) => (
+                    {features.map((feature) => (
                         <li key={feature} className="flex gap-3 text-sm leading-6 text-slate-300">
                             <CheckIcon />
                             <span>{feature}</span>
@@ -216,14 +260,14 @@ function StatusSection(){
     )
 }
 
-function TechnologySection(){
+function TechnologySection({ isEnglish }){
     const icons = [ReactIcon, ViteIcon, TypeScriptIcon, TailwindIcon, DjangoIcon, DockerIcon]
 
     return(
         <section className="px-5 py-3 sm:px-6">
             <div className="mx-auto w-full max-w-6xl rounded-lg border border-cyan-100/10 bg-slate-950/24 p-6 shadow-[0_28px_80px_rgba(0,0,0,0.22)] backdrop-blur sm:p-8">
                 <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                    Technologie
+                    {isEnglish ? NOVADERM_EN.technologies : 'Technologie'}
                 </p>
                 <div className="mt-6 grid gap-5 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
                     {NOVADERM_STACK.map((technology, index) => {
@@ -244,34 +288,36 @@ function TechnologySection(){
     )
 }
 
-function DetailsSection(){
+function DetailsSection({ isEnglish }){
+    const processSteps = isEnglish ? NOVADERM_EN.process : PROCESS_STEPS
+    const screenTitles = isEnglish ? NOVADERM_EN.screens : SCREENSHOTS.map((screen) => screen.title)
+    const screenshots = SCREENSHOTS.map((screen, index) => ({
+        ...screen,
+        title: screenTitles[index],
+    }))
+
     return(
         <section className="px-5 py-3 sm:px-6">
             <div className="mx-auto w-full max-w-6xl rounded-lg border border-cyan-100/10 bg-slate-950/24 p-6 shadow-[0_28px_80px_rgba(0,0,0,0.22)] backdrop-blur sm:p-8">
                 <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
                     <div>
                         <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                            Opis projektu
+                            {isEnglish ? NOVADERM_EN.descriptionTitle : 'Opis projektu'}
                         </p>
                         <p className="mt-7 text-base leading-8 text-slate-300">
-                            NovaDerm to strona internetowa dla gabinetu depilacji laserowej,
-                            zaprojektowana z myślą o eleganckiej prezentacji oferty i budowaniu
-                            zaufania do marki. Strona główna wykorzystuje estetykę branży beauty:
-                            jasne tło, eleganckie zdjęcia, delikatne animacje oraz czytelne CTA
-                            prowadzące do cennika lub rezerwacji.
+                            {isEnglish ? NOVADERM_EN.paragraphs[0] : 'NovaDerm to strona internetowa dla gabinetu depilacji laserowej, zaprojektowana z myślą o eleganckiej prezentacji oferty i budowaniu zaufania do marki. Strona główna wykorzystuje estetykę branży beauty: jasne tło, eleganckie zdjęcia, delikatne animacje oraz czytelne CTA prowadzące do cennika lub rezerwacji.'}
                         </p>
                         <p className="mt-5 text-base leading-8 text-slate-300">
-                            Zaplecze CMS umożliwia łatwe zarządzanie treściami,
-                            blogiem, ofertą, cennikiem i formularzami kontaktowymi.
+                            {isEnglish ? NOVADERM_EN.paragraphs[1] : 'Zaplecze CMS umożliwia łatwe zarządzanie treściami, blogiem, ofertą, cennikiem i formularzami kontaktowymi.'}
                         </p>
                     </div>
 
                     <div>
                         <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                            Proces realizacji
+                            {isEnglish ? NOVADERM_EN.processTitle : 'Proces realizacji'}
                         </p>
                         <ol className="mt-7 space-y-6">
-                            {PROCESS_STEPS.map((step, index) => (
+                            {processSteps.map((step, index) => (
                                 <li key={step} className="grid grid-cols-[2.5rem_1fr] gap-4">
                                     <span className="flex h-8 w-8 items-center justify-center rounded-full border border-cyan-300 text-xs font-extrabold text-cyan-300">
                                         {String(index + 1).padStart(2, '0')}
@@ -287,15 +333,15 @@ function DetailsSection(){
 
                 <div className="mt-12">
                     <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                        Wybrane ekrany
+                        {isEnglish ? NOVADERM_EN.screensTitle : 'Wybrane ekrany'}
                     </p>
                     <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                        {SCREENSHOTS.map((screen) => (
+                        {screenshots.map((screen) => (
                             <figure key={screen.title}>
                                 <div className="overflow-hidden rounded-md border border-cyan-100/10 bg-slate-900">
                                     <img
                                         src={screen.image}
-                                        alt={`Ekran projektu NovaDerm - ${screen.title}`}
+                                        alt={`${isEnglish ? NOVADERM_EN.screenAlt : 'Ekran projektu NovaDerm'} - ${screen.title}`}
                                         className="aspect-[16/10] w-full object-cover object-top transition duration-500 hover:scale-105"
                                     />
                                 </div>
@@ -307,7 +353,7 @@ function DetailsSection(){
                     </div>
                     <p className="mx-auto mt-10 flex max-w-3xl items-center justify-center gap-3 text-center text-sm leading-6 text-slate-400">
                         <InfoIcon />
-                        Pełen dostęp do panelu administracyjnego oraz wszystkie podstrony dostępne w wersji podglądowej.
+                        {isEnglish ? NOVADERM_EN.info : 'Pełen dostęp do panelu administracyjnego oraz wszystkie podstrony dostępne w wersji podglądowej.'}
                     </p>
                 </div>
             </div>
@@ -315,7 +361,7 @@ function DetailsSection(){
     )
 }
 
-function ProjectNavigation(){
+function ProjectNavigation({ isEnglish }){
     return(
         <section className="px-5 pb-10 pt-3 sm:px-6">
             <div className="mx-auto grid w-full max-w-6xl gap-4 lg:grid-cols-2">
@@ -327,7 +373,7 @@ function ProjectNavigation(){
                         <ArrowLeftIcon />
                     </span>
                     <p className="mt-5 text-sm font-bold text-cyan-300">
-                        Poprzedni projekt
+                        {isEnglish ? NOVADERM_EN.previous : 'Poprzedni projekt'}
                     </p>
                     <p className="mt-1 text-lg font-bold text-white">
                         BrainLift
@@ -341,7 +387,7 @@ function ProjectNavigation(){
                         <ArrowRightIcon />
                     </span>
                     <p className="mt-5 text-sm font-bold text-cyan-300">
-                        Następny projekt
+                        {isEnglish ? NOVADERM_EN.next : 'Następny projekt'}
                     </p>
                     <p className="mt-1 text-lg font-bold text-white">
                         AI Colorization

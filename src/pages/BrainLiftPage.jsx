@@ -4,6 +4,7 @@ import cropScreen from '../images/image copy 7.png'
 import wordsScreen from '../images/image copy 8.png'
 import booksScreen from '../images/image copy 9.png'
 import bookReaderScreen from '../images/image copy 10.png'
+import { LanguageSwitch } from '../components/LanguageSwitch.jsx'
 
 const PROFILE_NAME = 'Michał Młynarczyk'
 const BRAINLIFT_PREVIEW_URL = 'http://45.93.139.211/'
@@ -72,29 +73,81 @@ const APP_SCREENS = [
         image: bookReaderScreen,
     },
 ]
+const BRAINLIFT_EN = {
+    nav: ['Projects', 'About', 'Skills', 'Contact'],
+    homeAria: 'Home page',
+    back: 'Back to projects',
+    category: 'Personal project',
+    summary: 'Web application for learning English with OCR, AI, dictionaries, and flashcards.',
+    intro: 'BrainLift supports English learning by scanning texts, automatically extracting vocabulary, translating it with AI, and practicing with flashcards.',
+    preview: 'View project preview',
+    statusTitle: 'Language learning application project',
+    statusText: 'The project combines OCR, image processing, AI translations, custom word databases, flashcards, and a PDF book reading module.',
+    features: [
+        'Scanning photos of books or notes',
+        'Rotation, cropping, background cleanup, and readability improvement',
+        'OCR for recognizing text from images',
+        'Automatic extraction of English-Polish word pairs',
+        'Word translation through OpenAI',
+        'Saving words to custom databases',
+        'Dictionary with search, pagination, editing, and word deletion',
+        'Flashcard mode with database selection, randomization, and learning direction switch',
+        'PDF books module with page preview, bookmarks, and clickable words',
+        'User account: registration, login, sessions, and separate user data',
+        'Guest mode with limits',
+    ],
+    technologies: 'Technologies',
+    technologyGroups: ['Frontend', 'Backend', 'DevOps / deployment'],
+    descriptionTitle: 'Project description',
+    paragraphs: [
+        'BrainLift is a web application that supports learning English by scanning texts, automatically extracting vocabulary, translating it with AI, and practicing with flashcards.',
+        'The user can create custom word databases, manage a dictionary, browse prepared PDF books, and add new vocabulary directly from text.',
+    ],
+    processTitle: 'Delivery process',
+    process: [
+        'Designing the flow: scanning, OCR, translation, database saving, and flashcard practice',
+        'Implementing the React frontend with separate modules for scans, dictionary, flashcards, and books',
+        'Building a Flask backend with REST API for authentication, OCR, translations, dictionaries, and PDFs',
+        'Configuring Docker Compose, Gunicorn, and Nginx as the frontend and API proxy',
+    ],
+    architectureTitle: 'Architecture',
+    architecture: [
+        'The backend in the backend directory exposes a REST API for authentication, dictionaries, flashcards, OCR, translations, and PDF books.',
+        'The frontend in the english directory communicates with the API through separate services, including wordsApi, scanApi, booksApi, and authApi.',
+        'User data, word databases, bookmarks, and sessions are separated so each user works with their own data set.',
+    ],
+    screensTitle: 'Application views',
+    screens: ['Dashboard', 'Scanning', 'OCR cropping', 'Extracted words', 'PDF books', 'Clicking words in PDF'],
+    screenAlt: 'BrainLift application view',
+    previous: 'Previous project',
+    next: 'Next project',
+}
 
-export function BrainLiftPage(){
+export function BrainLiftPage({ language, onLanguageChange }){
+    const isEnglish = language === 'en'
+
     return(
         <main className="min-h-screen bg-[#061018] text-slate-100">
             <div className="relative isolate overflow-hidden">
                 <BackgroundLines />
-                <SiteHeader />
-                <HeroSection />
-                <StatusSection />
-                <TechnologySection />
-                <DetailsSection />
-                <ProjectNavigation />
+                <SiteHeader language={language} onLanguageChange={onLanguageChange} isEnglish={isEnglish} />
+                <HeroSection isEnglish={isEnglish} />
+                <StatusSection isEnglish={isEnglish} />
+                <TechnologySection isEnglish={isEnglish} />
+                <DetailsSection isEnglish={isEnglish} />
+                <ProjectNavigation isEnglish={isEnglish} />
             </div>
         </main>
     )
 }
 
-function SiteHeader(){
+function SiteHeader({ language, onLanguageChange, isEnglish }){
+    const labels = isEnglish ? BRAINLIFT_EN.nav : ['Projekty', 'O mnie', 'Umiejętności', 'Kontakt']
     const navItems = [
-        { label: 'Projekty', href: '/#projects', isActive: true },
-        { label: 'O mnie', href: '/#about' },
-        { label: 'Umiejętności', href: '/#skills' },
-        { label: 'Kontakt', href: '/#contact' },
+        { label: labels[0], href: '/#projects', isActive: true },
+        { label: labels[1], href: '/#about' },
+        { label: labels[2], href: '/#skills' },
+        { label: labels[3], href: '/#contact' },
     ]
 
     return(
@@ -103,7 +156,7 @@ function SiteHeader(){
                 <a
                     href="/"
                     className="group inline-flex items-center gap-4 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-4 focus:ring-offset-[#061018]"
-                    aria-label="Strona główna"
+                    aria-label={isEnglish ? BRAINLIFT_EN.homeAria : 'Strona główna'}
                 >
                     <span className="flex h-9 w-9 items-center justify-center rounded-md border border-cyan-300/70 bg-cyan-300/10 text-sm font-bold text-cyan-200 shadow-[0_0_24px_rgba(34,211,238,0.16)]">
                         MM
@@ -128,12 +181,13 @@ function SiteHeader(){
                         </a>
                     ))}
                 </div>
+                <LanguageSwitch language={language} onLanguageChange={onLanguageChange} />
             </nav>
         </header>
     )
 }
 
-function HeroSection(){
+function HeroSection({ isEnglish }){
     return(
         <section className="px-5 pb-8 pt-12 sm:px-6 sm:pt-16 lg:pb-12 lg:pt-20">
             <div className="mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-[0.86fr_1.14fr] lg:items-center">
@@ -143,22 +197,20 @@ function HeroSection(){
                         className="inline-flex items-center gap-3 text-sm font-bold text-slate-300 transition hover:gap-4 hover:text-cyan-200 focus:outline-none focus:ring-2 focus:ring-cyan-200 focus:ring-offset-4 focus:ring-offset-[#061018]"
                     >
                         <ArrowLeftIcon />
-                        Wróć do projektów
+                        {isEnglish ? BRAINLIFT_EN.back : 'Wróć do projektów'}
                     </a>
 
                     <p className="mt-12 text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                        Projekt własny
+                        {isEnglish ? BRAINLIFT_EN.category : 'Projekt własny'}
                     </p>
                     <h1 className="mt-5 text-5xl font-extrabold leading-tight text-white sm:text-6xl">
                         BrainLift
                     </h1>
                     <p className="mt-6 max-w-xl text-xl font-semibold leading-8 text-slate-200">
-                        Aplikacja webowa do nauki angielskiego przez OCR, AI, słowniki i fiszki.
+                        {isEnglish ? BRAINLIFT_EN.summary : 'Aplikacja webowa do nauki angielskiego przez OCR, AI, słowniki i fiszki.'}
                     </p>
                     <p className="mt-6 max-w-xl text-base leading-8 text-slate-400">
-                        BrainLift wspiera naukę języka angielskiego przez skanowanie tekstów,
-                        automatyczne wyciąganie słówek, tłumaczenie ich z pomocą AI oraz
-                        ćwiczenie przy pomocy fiszek.
+                        {isEnglish ? BRAINLIFT_EN.intro : 'BrainLift wspiera naukę języka angielskiego przez skanowanie tekstów, automatyczne wyciąganie słówek, tłumaczenie ich z pomocą AI oraz ćwiczenie przy pomocy fiszek.'}
                     </p>
 
                     <div className="mt-7 flex flex-wrap gap-2.5">
@@ -179,7 +231,7 @@ function HeroSection(){
                             rel="noreferrer"
                             className="inline-flex min-h-12 items-center justify-center gap-3 rounded-md bg-cyan-300 px-6 text-sm font-extrabold text-[#061018] shadow-[0_18px_42px_rgba(34,211,238,0.24)] transition hover:-translate-y-0.5 hover:bg-cyan-200 focus:outline-none focus:ring-2 focus:ring-cyan-200 focus:ring-offset-4 focus:ring-offset-[#061018]"
                         >
-                            Zobacz podgląd projektu
+                            {isEnglish ? BRAINLIFT_EN.preview : 'Zobacz podgląd projektu'}
                             <ExternalLinkIcon />
                         </a>
                     </div>
@@ -209,7 +261,9 @@ function AppPreview(){
     )
 }
 
-function StatusSection(){
+function StatusSection({ isEnglish }){
+    const features = isEnglish ? BRAINLIFT_EN.features : BRAINLIFT_FEATURES
+
     return(
         <section className="px-5 py-3 sm:px-6">
             <div className="mx-auto grid w-full max-w-6xl gap-8 rounded-lg border border-cyan-100/10 bg-slate-950/24 p-6 shadow-[0_28px_80px_rgba(0,0,0,0.22)] backdrop-blur sm:p-8 lg:grid-cols-[0.75fr_1.25fr]">
@@ -218,15 +272,14 @@ function StatusSection(){
                         Status
                     </p>
                     <h2 className="mt-4 text-2xl font-extrabold leading-tight text-white sm:text-3xl">
-                        Projekt aplikacji do nauki języka
+                        {isEnglish ? BRAINLIFT_EN.statusTitle : 'Projekt aplikacji do nauki języka'}
                     </h2>
                     <p className="mt-6 text-base leading-8 text-slate-400">
-                        Projekt łączy OCR, przetwarzanie obrazu, tłumaczenia AI, własne
-                        bazy słów, fiszki oraz moduł czytania książek PDF.
+                        {isEnglish ? BRAINLIFT_EN.statusText : 'Projekt łączy OCR, przetwarzanie obrazu, tłumaczenia AI, własne bazy słów, fiszki oraz moduł czytania książek PDF.'}
                     </p>
                 </div>
                 <ul className="grid gap-4 sm:grid-cols-2">
-                    {BRAINLIFT_FEATURES.map((feature) => (
+                    {features.map((feature) => (
                         <li key={feature} className="flex gap-3 text-sm leading-6 text-slate-300">
                             <CheckIcon />
                             <span>{feature}</span>
@@ -238,15 +291,20 @@ function StatusSection(){
     )
 }
 
-function TechnologySection(){
+function TechnologySection({ isEnglish }){
+    const groups = TECHNOLOGY_GROUPS.map((group, index) => ({
+        ...group,
+        title: isEnglish ? BRAINLIFT_EN.technologyGroups[index] : group.title,
+    }))
+
     return(
         <section className="px-5 py-3 sm:px-6">
             <div className="mx-auto w-full max-w-6xl rounded-lg border border-cyan-100/10 bg-slate-950/24 p-6 shadow-[0_28px_80px_rgba(0,0,0,0.22)] backdrop-blur sm:p-8">
                 <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                    Technologie
+                    {isEnglish ? BRAINLIFT_EN.technologies : 'Technologie'}
                 </p>
                 <div className="mt-6 grid gap-5 lg:grid-cols-3">
-                    {TECHNOLOGY_GROUPS.map((group) => (
+                    {groups.map((group) => (
                         <article key={group.title} className="rounded-lg border border-cyan-100/10 bg-slate-950/30 p-5">
                             <h3 className="text-base font-extrabold text-white">
                                 {group.title}
@@ -269,33 +327,37 @@ function TechnologySection(){
     )
 }
 
-function DetailsSection(){
+function DetailsSection({ isEnglish }){
+    const processSteps = isEnglish ? BRAINLIFT_EN.process : PROCESS_STEPS
+    const architecturePoints = isEnglish ? BRAINLIFT_EN.architecture : ARCHITECTURE_POINTS
+    const screenTitles = isEnglish ? BRAINLIFT_EN.screens : APP_SCREENS.map((screen) => screen.title)
+    const appScreens = APP_SCREENS.map((screen, index) => ({
+        ...screen,
+        title: screenTitles[index],
+    }))
+
     return(
         <section className="px-5 py-3 sm:px-6">
             <div className="mx-auto w-full max-w-6xl rounded-lg border border-cyan-100/10 bg-slate-950/24 p-6 shadow-[0_28px_80px_rgba(0,0,0,0.22)] backdrop-blur sm:p-8">
                 <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
                     <div>
                         <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                            Opis projektu
+                            {isEnglish ? BRAINLIFT_EN.descriptionTitle : 'Opis projektu'}
                         </p>
                         <p className="mt-7 text-base leading-8 text-slate-300">
-                            BrainLift to aplikacja webowa wspierająca naukę języka angielskiego
-                            przez skanowanie tekstów, automatyczne wyciąganie słówek,
-                            tłumaczenie ich z pomocą AI oraz ćwiczenie przy pomocy fiszek.
+                            {isEnglish ? BRAINLIFT_EN.paragraphs[0] : 'BrainLift to aplikacja webowa wspierająca naukę języka angielskiego przez skanowanie tekstów, automatyczne wyciąganie słówek, tłumaczenie ich z pomocą AI oraz ćwiczenie przy pomocy fiszek.'}
                         </p>
                         <p className="mt-5 text-base leading-8 text-slate-300">
-                            Użytkownik może tworzyć własne bazy słów, zarządzać słownikiem,
-                            przeglądać przygotowane książki PDF i dodawać nowe słówka
-                            bezpośrednio z tekstu.
+                            {isEnglish ? BRAINLIFT_EN.paragraphs[1] : 'Użytkownik może tworzyć własne bazy słów, zarządzać słownikiem, przeglądać przygotowane książki PDF i dodawać nowe słówka bezpośrednio z tekstu.'}
                         </p>
                     </div>
 
                     <div>
                         <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                            Proces realizacji
+                            {isEnglish ? BRAINLIFT_EN.processTitle : 'Proces realizacji'}
                         </p>
                         <ol className="mt-7 space-y-6">
-                            {PROCESS_STEPS.map((step, index) => (
+                            {processSteps.map((step, index) => (
                                 <li key={step} className="grid grid-cols-[2.5rem_1fr] gap-4">
                                     <span className="flex h-8 w-8 items-center justify-center rounded-full border border-cyan-300 text-xs font-extrabold text-cyan-300">
                                         {String(index + 1).padStart(2, '0')}
@@ -311,10 +373,10 @@ function DetailsSection(){
 
                 <div className="mt-12 rounded-lg border border-cyan-100/10 bg-slate-950/30 p-5 sm:p-6">
                     <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                        Architektura
+                        {isEnglish ? BRAINLIFT_EN.architectureTitle : 'Architektura'}
                     </p>
                     <ul className="mt-6 grid gap-4 lg:grid-cols-3">
-                        {ARCHITECTURE_POINTS.map((point) => (
+                        {architecturePoints.map((point) => (
                             <li key={point} className="flex gap-3 text-sm leading-6 text-slate-300">
                                 <CheckIcon />
                                 <span>{point}</span>
@@ -325,11 +387,11 @@ function DetailsSection(){
 
                 <div className="mt-12">
                     <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                        Widoki aplikacji
+                        {isEnglish ? BRAINLIFT_EN.screensTitle : 'Widoki aplikacji'}
                     </p>
                     <div className="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-                        {APP_SCREENS.map((screen) => (
-                            <AppScreenCard key={screen.title} screen={screen} />
+                        {appScreens.map((screen) => (
+                            <AppScreenCard key={screen.title} screen={screen} isEnglish={isEnglish} />
                         ))}
                     </div>
                 </div>
@@ -338,13 +400,13 @@ function DetailsSection(){
     )
 }
 
-function AppScreenCard({ screen }){
+function AppScreenCard({ screen, isEnglish }){
     return(
         <article className="rounded-lg border border-cyan-100/10 bg-slate-950/30 p-4">
             <div className="overflow-hidden rounded-md border border-cyan-100/10 bg-slate-900">
                 <img
                     src={screen.image}
-                    alt={`Widok aplikacji BrainLift - ${screen.title}`}
+                    alt={`${isEnglish ? BRAINLIFT_EN.screenAlt : 'Widok aplikacji BrainLift'} - ${screen.title}`}
                     className="aspect-[16/10] w-full object-cover object-top transition duration-500 hover:scale-105"
                 />
             </div>
@@ -355,7 +417,7 @@ function AppScreenCard({ screen }){
     )
 }
 
-function ProjectNavigation(){
+function ProjectNavigation({ isEnglish }){
     return(
         <section className="px-5 pb-10 pt-3 sm:px-6">
             <div className="mx-auto grid w-full max-w-6xl gap-4 lg:grid-cols-2">
@@ -367,7 +429,7 @@ function ProjectNavigation(){
                         <ArrowLeftIcon />
                     </span>
                     <p className="mt-5 text-sm font-bold text-cyan-300">
-                        Poprzedni projekt
+                        {isEnglish ? BRAINLIFT_EN.previous : 'Poprzedni projekt'}
                     </p>
                     <p className="mt-1 text-lg font-bold text-white">
                         NovaDerm
@@ -381,7 +443,7 @@ function ProjectNavigation(){
                         <ArrowRightIcon />
                     </span>
                     <p className="mt-5 text-sm font-bold text-cyan-300">
-                        Następny projekt
+                        {isEnglish ? BRAINLIFT_EN.next : 'Następny projekt'}
                     </p>
                     <p className="mt-1 text-lg font-bold text-white">
                         AI Colorization

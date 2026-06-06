@@ -1,16 +1,18 @@
 import novaDermPreview from '../images/image.png'
 import engineeringPreview from '../images/image copy 13.png'
+import { LanguageSwitch } from '../components/LanguageSwitch.jsx'
 
 const cvFiles = import.meta.glob('../cv/*.pdf', {
     eager: true,
     query: '?url',
     import: 'default',
 })
-const CV_FILE = Object.entries(cvFiles).sort(([firstPath], [secondPath]) => firstPath.localeCompare(secondPath))[0]?.[1]
+const CV_FILES = {
+    pl: Object.entries(cvFiles).find(([path]) => path.includes('(2)'))?.[1],
+    en: Object.entries(cvFiles).find(([path]) => path.includes('(5)'))?.[1],
+}
+const PROFILE_PHOTO_SRC = '/ChatGPT Image 6 cze 2026, 22_02_58.png'
 const HOME_NAME_TEXT = 'Michał Młynarczyk'
-const HOME_ROLE_TEXT = 'Informatyka • AI • Embedded Systems'
-const HOME_DESCRIPTION_TEXT =
-    'Tworzę aplikacje webowe, eksperymentuję z rozwiązaniami AI oraz interesuję się systemami embedded i automatyką.'
 const HOME_SOCIAL_LINKS = [
     {
         label: 'GitHub',
@@ -26,98 +28,6 @@ const HOME_SOCIAL_LINKS = [
         label: 'Email',
         href: 'mailto:mlymichal@gmail.com',
         icon: MailIcon,
-    },
-]
-const PROJECT_SNIPPETS = [
-    {
-        title: 'AI Colorization',
-        description:
-            'Automatyczne kolorowanie obrazów czarno-białych z wykorzystaniem sieci CNN, U-Net oraz GAN.',
-        category: 'Praca inżynierska',
-        href: '/engineering-work',
-        icon: GraduationCapIcon,
-        preview: engineeringPreview,
-        tags: ['Python', 'TensorFlow', 'Keras', 'OpenCV', 'GAN', 'U-Net'],
-    },
-    {
-        title: 'NovaDerm',
-        description:
-            'Strona internetowa dla gabinetu depilacji laserowej z panelem CMS i konfiguracją Docker.',
-        category: 'Projekt klienta',
-        href: '/novaderm',
-        icon: CodeIcon,
-        preview: novaDermPreview,
-        tags: ['React', 'Django', 'Tailwind', 'Docker'],
-    },
-    {
-        title: 'BrainLift',
-        description:
-            'Aplikacja do nauki angielskiego przez OCR, AI, własne słowniki, fiszki i książki PDF.',
-        category: 'Projekt własny',
-        href: '/brainlift',
-        icon: CodeIcon,
-        previewType: 'brain',
-        tags: ['React', 'Flask', 'OpenCV', 'OpenAI API'],
-    },
-]
-const CONTACT_DETAILS = [
-    {
-        label: 'Imię i nazwisko',
-        value: HOME_NAME_TEXT,
-        icon: UserIcon,
-    },
-    {
-        label: 'Lokalizacja',
-        value: 'Nowy Sącz, Polska',
-        icon: PinIcon,
-    },
-    {
-        label: 'E-mail',
-        value: 'mlymichal@gmail.com',
-        icon: MailLineIcon,
-    },
-    {
-        label: 'Dostępność',
-        value: 'Dostępny do współpracy',
-        icon: CheckSquareIcon,
-    },
-]
-const CONTACT_BAR_ITEMS = [
-    {
-        label: 'Lokalizacja',
-        value: 'Nowy Sącz, Polska',
-        icon: PinIcon,
-    },
-    {
-        label: 'E-mail',
-        value: 'mlymichal@gmail.com',
-        icon: MailLineIcon,
-    },
-    {
-        label: 'Telefon',
-        value: '696 545 529',
-        icon: PhoneIcon,
-    },
-]
-const EXPERIENCE_ITEMS = [
-    {
-        role: 'Automatyk',
-        company: 'PLK Nowy Sącz',
-        period: '2020 - 2024',
-        tasks: [
-            'Diagnostyka i utrzymanie systemów technicznych',
-            'Rozwiązywanie problemów w środowisku przemysłowym',
-            'Praca z dokumentacją techniczną',
-        ],
-    },
-    {
-        role: 'Technik turbin wiatrowych',
-        company: 'RES Energy',
-        period: '2024 - 2025',
-        tasks: [
-            'Serwis i diagnostyka turbin wiatrowych',
-            'Praca w środowisku technicznym o wysokiej odpowiedzialności',
-        ],
     },
 ]
 const SKILL_GROUPS = [
@@ -142,51 +52,195 @@ const SKILL_GROUPS = [
         skills: ['Docker', 'Linux', 'Git'],
     },
 ]
-const ABOUT_STATS = [
-    {
-        value: '4+ lata',
-        label: 'doświadczenia zawodowego',
-        icon: CalendarIcon,
+const HOME_TRANSLATIONS = {
+    pl: {
+        nav: ['Projekty', 'O mnie', 'Umiejętności', 'Kontakt'],
+        homeAria: 'Strona główna',
+        role: 'Informatyka • AI • Embedded Systems',
+        hello: 'Cześć, jestem',
+        description: 'Tworzę aplikacje webowe, eksperymentuję z rozwiązaniami AI oraz interesuję się systemami embedded i automatyką.',
+        projectsCta: 'Zobacz projekty',
+        cvCta: 'Pobierz CV',
+        projectsTitle: 'Projekty',
+        detailsCta: 'Zobacz szczegóły',
+        projectImageAlt: 'Miniatura projektu',
+        aboutTitle: 'O mnie',
+        aboutParagraphs: [
+            { text: 'Jestem absolwentem Informatyki w Inżynierii Komputerowej na Politechnice Krakowskiej. Na co dzień pracuję w środowisku technicznym, gdzie przez ostatnie lata zdobywałem doświadczenie w automatyce przemysłowej, diagnostyce oraz utrzymaniu systemów technicznych.' },
+            { text: 'Największą satysfakcję daje mi rozwiązywanie problemów. Niezależnie od tego, czy dotyczą one oprogramowania, systemów przemysłowych, sztucznej inteligencji czy automatyki, najbardziej motywuje mnie proces analizowania, projektowania i budowania działających rozwiązań.' },
+            { text: 'Programuję głównie w Pythonie i C++, pracuję na Linuxie oraz wykorzystuję narzędzia związane z AI, Computer Vision i konteneryzacją. W ramach pracy inżynierskiej zajmowałem się automatycznym kolorowaniem obrazów przy użyciu sieci neuronowych, porównując różne architektury głębokiego uczenia i ich wpływ na jakość generowanych wyników.' },
+            { text: 'Obecnie rozwijam się w kierunku sztucznej inteligencji, uczenia maszynowego oraz robotyki. Szczególnie interesują mnie projekty łączące świat oprogramowania z rzeczywistymi systemami technicznymi. Nie jestem przywiązany do jednej ścieżki kariery - zarówno AI/ML, jak i robotyka są obszarami, w których chciałbym zdobywać praktyczne doświadczenie i realizować ambitne projekty.' },
+            { text: 'Aktualnie poszukuję możliwości współpracy projektowej w modelu zdalnym (part-time), którą mógłbym realizować równolegle z obecną pracą zawodową. Najważniejsza jest dla mnie możliwość nauki, rozwoju i udziału w ciekawych przedsięwzięciach technologicznych.', strong: true },
+        ],
+        experienceTitle: 'Doświadczenie zawodowe',
+        educationTitle: 'Inżynier: Informatyka w inżynierii komputerowej',
+        educationSchool: 'Politechnika Krakowska',
+        educationSpecialization: 'Specjalizacja: Inżynieria oprogramowania',
+        skillsTitle: 'Umiejętności',
+        contactTitle: 'Masz pomysł na projekt?',
+        contactSubtitle: 'Chętnie nawiążę współpracę.',
+        projects: [
+            {
+                title: 'AI Colorization',
+                description: 'Automatyczne kolorowanie obrazów czarno-białych z wykorzystaniem sieci CNN, U-Net oraz GAN.',
+                category: 'Praca inżynierska',
+                href: '/engineering-work',
+                icon: GraduationCapIcon,
+                preview: engineeringPreview,
+                tags: ['Python', 'TensorFlow', 'Keras', 'OpenCV', 'GAN', 'U-Net'],
+            },
+            {
+                title: 'NovaDerm',
+                description: 'Strona internetowa dla gabinetu depilacji laserowej z panelem CMS i konfiguracją Docker.',
+                category: 'Projekt klienta',
+                href: '/novaderm',
+                icon: CodeIcon,
+                preview: novaDermPreview,
+                tags: ['React', 'Django', 'Tailwind', 'Docker'],
+            },
+            {
+                title: 'BrainLift',
+                description: 'Aplikacja do nauki angielskiego przez OCR, AI, własne słowniki, fiszki i książki PDF.',
+                category: 'Projekt własny',
+                href: '/brainlift',
+                icon: CodeIcon,
+                previewType: 'brain',
+                tags: ['React', 'Flask', 'OpenCV', 'OpenAI API'],
+            },
+        ],
+        stats: [
+            { value: '4+ lata', label: 'doświadczenia zawodowego', icon: CalendarIcon },
+            { value: '5+', label: 'projektów własnych', icon: CodeIcon },
+            { value: 'AI & ML', label: 'doświadczenie w uczeniu maszynowym', icon: BrainIcon },
+            { value: 'Inżynier', label: 'dyplom Politechniki Krakowskiej', icon: GraduationCapIcon },
+        ],
+        experience: [
+            {
+                role: 'Automatyk',
+                company: 'PLK Nowy Sącz',
+                period: '2020 - 2024',
+                tasks: ['Diagnostyka i utrzymanie systemów technicznych', 'Rozwiązywanie problemów w środowisku przemysłowym', 'Praca z dokumentacją techniczną'],
+            },
+            {
+                role: 'Technik turbin wiatrowych',
+                company: 'RES Energy',
+                period: '2024 - 2025',
+                tasks: ['Serwis i diagnostyka turbin wiatrowych', 'Praca w środowisku technicznym o wysokiej odpowiedzialności'],
+            },
+        ],
+        contact: [
+            { label: 'Lokalizacja', value: 'Nowy Sącz, Polska', icon: PinIcon },
+            { label: 'E-mail', value: 'mlymichal@gmail.com', icon: MailLineIcon },
+            { label: 'Telefon', value: '696 545 529', icon: PhoneIcon },
+        ],
     },
-    {
-        value: '5+',
-        label: 'projektów własnych',
-        icon: CodeIcon,
+    en: {
+        nav: ['Projects', 'About', 'Skills', 'Contact'],
+        homeAria: 'Home page',
+        role: 'Computer Science • AI • Embedded Systems',
+        hello: 'Hi, I am',
+        description: 'I build web applications, experiment with AI solutions, and explore embedded systems and automation.',
+        projectsCta: 'View projects',
+        cvCta: 'Download CV',
+        projectsTitle: 'Projects',
+        detailsCta: 'View details',
+        projectImageAlt: 'Project thumbnail',
+        aboutTitle: 'About me',
+        aboutParagraphs: [
+            { text: 'I graduated in Computer Science in Computer Engineering from Cracow University of Technology. On a daily basis, I work in a technical environment where, over the last few years, I have gained experience in industrial automation, diagnostics, and maintenance of technical systems.' },
+            { text: 'Solving problems gives me the greatest satisfaction. Whether they involve software, industrial systems, artificial intelligence, or automation, I am most motivated by the process of analyzing, designing, and building working solutions.' },
+            { text: 'I mainly program in Python and C++, work on Linux, and use tools related to AI, Computer Vision, and containerization. In my engineering thesis, I worked on automatic image colorization using neural networks, comparing different deep learning architectures and their impact on generated output quality.' },
+            { text: 'I am currently developing toward artificial intelligence, machine learning, and robotics. I am especially interested in projects that connect software with real technical systems. I am not attached to a single career path - both AI/ML and robotics are areas where I would like to gain practical experience and work on ambitious projects.' },
+            { text: 'I am currently looking for remote project collaboration opportunities (part-time) that I could pursue alongside my current job. What matters most to me is the opportunity to learn, grow, and take part in interesting technology initiatives.', strong: true },
+        ],
+        experienceTitle: 'Professional experience',
+        educationTitle: 'Engineer: Computer Science in Computer Engineering',
+        educationSchool: 'Cracow University of Technology',
+        educationSpecialization: 'Specialization: Software Engineering',
+        skillsTitle: 'Skills',
+        contactTitle: 'Have a project idea?',
+        contactSubtitle: 'I am open to collaboration.',
+        projects: [
+            {
+                title: 'AI Colorization',
+                description: 'Automatic colorization of black-and-white images using CNN, U-Net, and GAN networks.',
+                category: 'Engineering thesis',
+                href: '/engineering-work',
+                icon: GraduationCapIcon,
+                preview: engineeringPreview,
+                tags: ['Python', 'TensorFlow', 'Keras', 'OpenCV', 'GAN', 'U-Net'],
+            },
+            {
+                title: 'NovaDerm',
+                description: 'Website for a laser hair removal studio with a CMS panel and Docker configuration.',
+                category: 'Client project',
+                href: '/novaderm',
+                icon: CodeIcon,
+                preview: novaDermPreview,
+                tags: ['React', 'Django', 'Tailwind', 'Docker'],
+            },
+            {
+                title: 'BrainLift',
+                description: 'English learning app using OCR, AI, custom dictionaries, flashcards, and PDF books.',
+                category: 'Personal project',
+                href: '/brainlift',
+                icon: CodeIcon,
+                previewType: 'brain',
+                tags: ['React', 'Flask', 'OpenCV', 'OpenAI API'],
+            },
+        ],
+        stats: [
+            { value: '4+ years', label: 'of professional experience', icon: CalendarIcon },
+            { value: '5+', label: 'personal projects', icon: CodeIcon },
+            { value: 'AI & ML', label: 'machine learning experience', icon: BrainIcon },
+            { value: 'Engineer', label: 'degree from Cracow University of Technology', icon: GraduationCapIcon },
+        ],
+        experience: [
+            {
+                role: 'Automation Specialist',
+                company: 'PLK Nowy Sącz',
+                period: '2020 - 2024',
+                tasks: ['Diagnostics and maintenance of technical systems', 'Solving problems in an industrial environment', 'Working with technical documentation'],
+            },
+            {
+                role: 'Wind Turbine Technician',
+                company: 'RES Energy',
+                period: '2024 - 2025',
+                tasks: ['Service and diagnostics of wind turbines', 'Work in a high-responsibility technical environment'],
+            },
+        ],
+        contact: [
+            { label: 'Location', value: 'Nowy Sącz, Poland', icon: PinIcon },
+            { label: 'E-mail', value: 'mlymichal@gmail.com', icon: MailLineIcon },
+            { label: 'Phone', value: '696 545 529', icon: PhoneIcon },
+        ],
     },
-    {
-        value: 'AI & ML',
-        label: 'doświadczenie w uczeniu maszynowym',
-        icon: BrainIcon,
-    },
-    {
-        value: 'Inżynier',
-        label: 'dyplom Politechniki Krakowskiej',
-        icon: GraduationCapIcon,
-    },
-]
+}
 
-export function HomePage(){
+export function HomePage({ language, onLanguageChange }){
+    const t = HOME_TRANSLATIONS[language] || HOME_TRANSLATIONS.pl
+
     return(
         <main className="min-h-screen bg-[#061018] text-slate-100">
             <div className="relative isolate overflow-hidden">
                 <BackgroundLines />
-                <SiteHeader />
-                <HeroSection />
-                <AboutSection />
-                <ProjectsSection />
-                <SkillsSection />
-                <ContactSection />
+                <SiteHeader t={t} language={language} onLanguageChange={onLanguageChange} />
+                <HeroSection t={t} language={language} />
+                <AboutSection t={t} />
+                <ProjectsSection t={t} />
+                <SkillsSection t={t} />
+                <ContactSection t={t} />
             </div>
         </main>
     )
 }
 
-function SiteHeader(){
+function SiteHeader({ t, language, onLanguageChange }){
     const navItems = [
-        { label: 'Projekty', href: '#projects' },
-        { label: 'O mnie', href: '#about' },
-        { label: 'Umiejętności', href: '#skills' },
-        { label: 'Kontakt', href: '#contact' },
+        { label: t.nav[0], href: '#projects' },
+        { label: t.nav[1], href: '#about' },
+        { label: t.nav[2], href: '#skills' },
+        { label: t.nav[3], href: '#contact' },
     ]
 
     return(
@@ -195,7 +249,7 @@ function SiteHeader(){
                 <a
                     href="/"
                     className="group inline-flex items-center gap-4 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-4 focus:ring-offset-[#061018]"
-                    aria-label="Strona główna"
+                    aria-label={t.homeAria}
                 >
                     <span className="flex h-9 w-9 items-center justify-center rounded-md border border-cyan-300/70 bg-cyan-300/10 text-sm font-bold text-cyan-200 shadow-[0_0_24px_rgba(34,211,238,0.16)]">
                         MM
@@ -216,25 +270,28 @@ function SiteHeader(){
                         </a>
                     ))}
                 </div>
+                <LanguageSwitch language={language} onLanguageChange={onLanguageChange} />
             </nav>
         </header>
     )
 }
 
-function HeroSection(){
+function HeroSection({ t, language }){
+    const cvFile = CV_FILES[language] || CV_FILES.pl || CV_FILES.en
+
     return(
         <section className="relative px-5 pb-8 pt-14 sm:px-6 sm:pt-20 lg:pb-10 lg:pt-24">
             <div className="mx-auto grid min-h-[36rem] w-full max-w-6xl gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
                 <div className="relative z-10 max-w-2xl">
                     <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-cyan-300">
-                        {HOME_ROLE_TEXT}
+                        {t.role}
                     </p>
                     <h1 className="mt-7 text-5xl font-extrabold leading-[1.04] text-white sm:text-6xl lg:text-[4.65rem]">
-                        Cześć, jestem
+                        {t.hello}
                         <span className="mt-2 block text-cyan-300">{HOME_NAME_TEXT}</span>
                     </h1>
                     <p className="mt-7 max-w-xl text-lg leading-8 text-slate-300">
-                        {HOME_DESCRIPTION_TEXT}
+                        {t.description}
                     </p>
 
                     <div className="mt-9 flex flex-col gap-4 sm:flex-row">
@@ -242,15 +299,15 @@ function HeroSection(){
                             href="#projects"
                             className="inline-flex min-h-12 items-center justify-center gap-3 rounded-md bg-cyan-300 px-6 text-sm font-extrabold text-[#061018] shadow-[0_18px_42px_rgba(34,211,238,0.24)] transition hover:-translate-y-0.5 hover:bg-cyan-200 focus:outline-none focus:ring-2 focus:ring-cyan-200 focus:ring-offset-4 focus:ring-offset-[#061018]"
                         >
-                            Zobacz projekty
+                            {t.projectsCta}
                             <ArrowRightIcon />
                         </a>
                         <a
-                            href={CV_FILE}
+                            href={cvFile}
                             download
                             className="inline-flex min-h-12 items-center justify-center gap-3 rounded-md border border-slate-500/70 px-6 text-sm font-bold text-slate-100 transition hover:-translate-y-0.5 hover:border-cyan-300 hover:text-cyan-200 focus:outline-none focus:ring-2 focus:ring-cyan-200 focus:ring-offset-4 focus:ring-offset-[#061018]"
                         >
-                            Pobierz CV
+                            {t.cvCta}
                             <DownloadIcon />
                         </a>
                     </div>
@@ -269,44 +326,53 @@ function HeroSection(){
                     </div>
                 </div>
 
-                <TechLinesVisual />
+                <ProfilePhotoVisual />
             </div>
         </section>
     )
 }
 
-function TechLinesVisual(){
+function ProfilePhotoVisual(){
     return(
-        <div className="relative hidden min-h-[34rem] w-full lg:block" aria-hidden="true">
-            <div className="absolute left-4 top-0 h-px w-[33rem] bg-cyan-100/10" />
-            <div className="absolute left-4 top-0 h-[25rem] w-px -rotate-45 origin-top bg-cyan-100/10" />
-            <div className="absolute bottom-28 left-0 h-px w-[27rem] bg-cyan-100/10" />
-            <div className="absolute bottom-28 left-[27rem] h-[10rem] w-px rotate-45 origin-top bg-cyan-100/10" />
-            <div className="absolute right-12 top-10 h-[31rem] w-px bg-cyan-100/10" />
-            <div className="absolute right-12 top-10 h-[20rem] w-px rotate-45 origin-top bg-cyan-100/10" />
+        <div className="relative z-10 mx-auto grid min-h-[28rem] w-full max-w-lg place-items-center lg:min-h-[34rem] lg:max-w-none">
+            <div className="absolute left-4 top-8 hidden h-px w-[33rem] bg-cyan-100/10 lg:block" aria-hidden="true" />
+            <div className="absolute left-4 top-8 hidden h-[18rem] w-px -rotate-45 origin-top bg-cyan-100/10 lg:block" aria-hidden="true" />
+            <div className="absolute bottom-16 right-4 hidden h-px w-[30rem] bg-cyan-300/18 lg:block" aria-hidden="true" />
+            <div className="absolute bottom-16 right-4 hidden h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_28px_rgba(34,211,238,0.8)] lg:block" aria-hidden="true" />
 
-            <div className="absolute right-56 top-28 h-40 w-40 border border-cyan-300/15" />
-            <div className="absolute right-44 top-48 h-72 w-px rotate-45 bg-cyan-300/20" />
-            <div className="absolute bottom-24 right-32 h-px w-44 bg-cyan-300/22" />
-            <div className="absolute bottom-[5.85rem] right-32 h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_28px_rgba(34,211,238,0.8)]" />
+            <div className="relative w-full max-w-[22rem] sm:max-w-[25rem] lg:max-w-[28rem]">
+                <div className="absolute -inset-6 border border-cyan-300/10" aria-hidden="true" />
+                <div className="absolute -right-5 -top-5 h-28 w-28 border border-cyan-300/20" aria-hidden="true" />
+                <div className="absolute -bottom-4 -left-4 h-40 w-px rotate-45 bg-cyan-300/25" aria-hidden="true" />
+                <div className="absolute inset-x-8 bottom-0 h-24 rounded-full bg-cyan-300/16 blur-3xl" aria-hidden="true" />
+
+                <div className="relative overflow-hidden rounded-lg border border-cyan-200/18 bg-slate-950/40 p-3 shadow-[0_30px_90px_rgba(0,0,0,0.45)] backdrop-blur">
+                    <img
+                        src={PROFILE_PHOTO_SRC}
+                        alt={HOME_NAME_TEXT}
+                        className="aspect-[4/5] w-full rounded-md object-cover object-center"
+                    />
+                    <div className="pointer-events-none absolute inset-3 rounded-md bg-gradient-to-t from-[#061018]/28 via-transparent to-cyan-100/5" />
+                </div>
+            </div>
         </div>
     )
 }
 
-function ProjectsSection(){
+function ProjectsSection({ t }){
     return(
         <section id="projects" className="px-5 py-3 sm:px-6">
             <div className="mx-auto w-full max-w-6xl rounded-lg border border-cyan-100/10 bg-slate-950/24 p-6 shadow-[0_28px_80px_rgba(0,0,0,0.24)] backdrop-blur sm:p-8">
                 <div className="flex items-center gap-3">
                     <FolderIcon />
                     <h2 className="text-2xl font-extrabold leading-tight text-white sm:text-3xl">
-                        Projekty
+                        {t.projectsTitle}
                     </h2>
                 </div>
 
                 <div className="mt-6 grid gap-5 lg:grid-cols-3">
-                    {PROJECT_SNIPPETS.map((project) => (
-                        <ProjectSnippetCard key={project.title} project={project} />
+                    {t.projects.map((project) => (
+                        <ProjectSnippetCard key={project.title} project={project} t={t} />
                     ))}
                 </div>
             </div>
@@ -314,10 +380,10 @@ function ProjectsSection(){
     )
 }
 
-function ProjectSnippetCard({ project }){
+function ProjectSnippetCard({ project, t }){
     return(
         <article className="group flex min-h-[20rem] flex-col rounded-lg border border-cyan-100/10 bg-slate-950/30 p-4 backdrop-blur transition hover:-translate-y-1 hover:border-cyan-300/45 hover:bg-slate-950/42">
-            <ProjectPreview project={project} />
+            <ProjectPreview project={project} t={t} />
 
             <h3 className="mt-5 text-xl font-extrabold leading-tight text-white">
                 {project.title}
@@ -341,20 +407,20 @@ function ProjectSnippetCard({ project }){
                 href={project.href}
                 className="mt-auto inline-flex w-fit items-center gap-2 pt-5 text-sm font-extrabold text-cyan-300 transition group-hover:gap-3 group-hover:text-cyan-200 focus:outline-none focus:ring-2 focus:ring-cyan-200 focus:ring-offset-4 focus:ring-offset-[#061018]"
             >
-                Zobacz szczegóły
+                {t.detailsCta}
                 <ArrowRightIcon />
             </a>
         </article>
     )
 }
 
-function ProjectPreview({ project }){
+function ProjectPreview({ project, t }){
     if (project.preview) {
         return(
             <div className="relative grid h-28 overflow-hidden rounded-md bg-slate-900 sm:h-32">
                 <img
                     src={project.preview}
-                    alt={`Miniatura projektu ${project.title}`}
+                    alt={`${t.projectImageAlt}: ${project.title}`}
                     className="h-full w-full object-cover object-top"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-slate-950/10 to-slate-950/35" />
@@ -392,7 +458,7 @@ function ProjectPreview({ project }){
     )
 }
 
-function AboutSection(){
+function AboutSection({ t }){
     return(
         <section id="about" className="px-5 py-3 sm:px-6">
             <div className="mx-auto w-full max-w-6xl rounded-lg border border-cyan-100/10 bg-slate-950/24 shadow-[0_28px_80px_rgba(0,0,0,0.26)] backdrop-blur">
@@ -401,33 +467,23 @@ function AboutSection(){
                         <div className="flex items-center gap-3">
                             <UserIcon />
                             <h2 className="text-2xl font-extrabold leading-tight text-white sm:text-3xl">
-                                O mnie
+                                {t.aboutTitle}
                             </h2>
                         </div>
-                        <p className="mt-6 text-base leading-8 text-slate-300">
-                            Jestem absolwentem Informatyki w Inżynierii Komputerowej
-                            na Politechnice Krakowskiej. Łączę doświadczenie zdobyte
-                            w automatyce przemysłowej z programowaniem aplikacji
-                            webowych oraz rozwiązaniami opartymi o sztuczną
-                            inteligencję.
-                        </p>
-                        <p className="mt-5 text-base leading-8 text-slate-300">
-                            Przez ponad 4 lata pracowałem jako automatyk, dzięki
-                            czemu nauczyłem się rozwiązywania problemów technicznych,
-                            analitycznego myślenia i pracy z rzeczywistymi systemami.
-                            Obecnie rozwijam się w kierunku full-stack developmentu,
-                            systemów embedded oraz machine learningu.
-                        </p>
-                        <p className="mt-5 text-base leading-8 text-slate-300">
-                            W pracy inżynierskiej zajmowałem się automatycznym
-                            kolorowaniem obrazów przy użyciu TensorFlow i Keras,
-                            porównując różne architektury głębokiego uczenia oraz ich
-                            wpływ na jakość generowanych wyników.
-                        </p>
+                        {t.aboutParagraphs.map((paragraph, index) => (
+                            <p
+                                key={paragraph.text}
+                                className={`${index === 0 ? 'mt-6' : 'mt-5'} text-base leading-8 ${
+                                    paragraph.strong ? 'font-extrabold text-cyan-100' : 'text-slate-300'
+                                }`}
+                            >
+                                {paragraph.text}
+                            </p>
+                        ))}
                     </div>
 
                     <div className="grid overflow-hidden rounded-lg border border-cyan-100/10 bg-slate-950/22 sm:grid-cols-2">
-                        {ABOUT_STATS.map((stat) => {
+                        {t.stats.map((stat) => {
                             const Icon = stat.icon
 
                             return(
@@ -446,25 +502,25 @@ function AboutSection(){
                 </div>
 
                 <div className="border-t border-cyan-100/10 p-6 sm:p-8 lg:p-9">
-                    <ExperienceSection />
-                    <EducationStrip />
+                    <ExperienceSection t={t} />
+                    <EducationStrip t={t} />
                 </div>
             </div>
         </section>
     )
 }
 
-function ExperienceSection(){
+function ExperienceSection({ t }){
     return(
         <section>
             <div className="flex items-center gap-3">
                 <BriefcaseIcon />
                 <h3 className="text-2xl font-extrabold text-white">
-                    Doświadczenie zawodowe
+                    {t.experienceTitle}
                 </h3>
             </div>
             <div className="mt-6 grid gap-5 lg:grid-cols-2">
-                {EXPERIENCE_ITEMS.map((item) => (
+                {t.experience.map((item) => (
                     <article
                         key={`${item.role}-${item.company}`}
                         className="grid gap-5 rounded-lg border border-cyan-100/10 bg-slate-950/30 p-5 backdrop-blur sm:grid-cols-[4.5rem_1fr] sm:p-6"
@@ -495,7 +551,7 @@ function ExperienceSection(){
     )
 }
 
-function EducationStrip(){
+function EducationStrip({ t }){
     return(
         <article className="mt-5 grid gap-5 rounded-lg border border-cyan-100/10 bg-slate-950/30 p-5 backdrop-blur sm:grid-cols-[4rem_1fr_auto] sm:items-center sm:p-6">
             <div className="flex h-14 w-14 items-center justify-center rounded-lg border border-cyan-300/20 bg-cyan-300/10">
@@ -506,27 +562,27 @@ function EducationStrip(){
                     2020 - 2025
                 </p>
                 <h3 className="mt-1 text-lg font-extrabold text-white">
-                    Inżynier: Informatyka w inżynierii komputerowej
+                    {t.educationTitle}
                 </h3>
                 <p className="mt-1 text-sm font-bold text-cyan-300">
-                    Politechnika Krakowska
+                    {t.educationSchool}
                 </p>
             </div>
             <p className="w-fit rounded-md bg-slate-800/80 px-3 py-1.5 text-xs font-extrabold text-slate-300 ring-1 ring-cyan-100/5">
-                Specjalizacja: Inżynieria oprogramowania
+                {t.educationSpecialization}
             </p>
         </article>
     )
 }
 
-function SkillsSection(){
+function SkillsSection({ t }){
     return(
         <section id="skills" className="px-5 py-3 sm:px-6">
             <div className="mx-auto w-full max-w-6xl rounded-lg border border-cyan-100/10 bg-slate-950/24 p-6 shadow-[0_28px_80px_rgba(0,0,0,0.22)] backdrop-blur sm:p-8">
                 <div className="flex items-center gap-3">
                     <CodeIcon />
                     <h2 className="text-2xl font-extrabold leading-tight text-white sm:text-3xl">
-                        Umiejętności
+                        {t.skillsTitle}
                     </h2>
                 </div>
                 <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -560,7 +616,7 @@ function SkillCard({ group }){
     )
 }
 
-function ContactSection(){
+function ContactSection({ t }){
     return(
         <section id="contact" className="px-5 pb-10 pt-3 sm:px-6">
             <div className="mx-auto grid w-full max-w-6xl gap-6 rounded-lg border border-cyan-100/10 bg-slate-950/24 p-6 shadow-[0_28px_80px_rgba(0,0,0,0.24)] backdrop-blur sm:p-8 lg:grid-cols-[1.1fr_1fr] lg:items-center">
@@ -570,16 +626,16 @@ function ContactSection(){
                     </div>
                     <div>
                         <h2 className="text-xl font-extrabold text-white">
-                            Masz pomysł na projekt?
+                            {t.contactTitle}
                         </h2>
                         <p className="mt-2 text-sm leading-6 text-cyan-300">
-                            Chętnie nawiążę współpracę.
+                            {t.contactSubtitle}
                         </p>
                     </div>
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-3">
-                    {CONTACT_BAR_ITEMS.map((item) => {
+                    {t.contact.map((item) => {
                         const Icon = item.icon
 
                         return(
@@ -661,9 +717,10 @@ function DownloadIcon(){
 
 function CodeIcon(){
     return(
-        <svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+        <svg aria-hidden="true" className="h-5 w-5 shrink-0 text-cyan-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round">
             <path d="m8 9-4 3 4 3" />
             <path d="m16 9 4 3-4 3" />
+            <path d="m14 5-4 14" />
         </svg>
     )
 }

@@ -1,6 +1,7 @@
 import unetDiagram from '../images/image copy 11.png'
 import labDiagram from '../images/image copy 12.png'
 import lossChart from '../images/image copy 13.png'
+import { LanguageSwitch } from '../components/LanguageSwitch.jsx'
 
 const PROFILE_NAME = 'Michał Młynarczyk'
 const THESIS_URL = 'https://drive.google.com/file/d/1feTJHq_sDV6JmpDGb34FCqS4HeR827bE/view?usp=sharing'
@@ -62,29 +63,76 @@ const VISUAL_MATERIALS = [
         image: lossChart,
     },
 ]
+const ENGINEERING_EN = {
+    nav: ['Projects', 'About', 'Skills', 'Contact'],
+    homeAria: 'Home page',
+    back: 'Back to projects',
+    category: 'Engineering thesis',
+    summary: 'Automatic colorization of black-and-white images using artificial intelligence.',
+    intro: 'A research project completed at Cracow University of Technology. The goal was to develop and compare deep learning models capable of reconstructing colors from grayscale images.',
+    thesis: 'View thesis',
+    modelLabel: 'Model',
+    statusTitle: 'Project completed and defended',
+    statusText: 'The thesis analyzed the effectiveness of different AI architectures for image colorization and assessed their practical application potential.',
+    statusItems: [
+        'Implementation of multiple CNN architectures',
+        'U-Net with skip connections',
+        'Transfer learning',
+        'CGAN and WGAN-GP',
+        'Analysis of loss functions and optimizers',
+        'Colorization quality assessment using EMD and Delta E metrics',
+        'Performance and computational cost tests',
+    ],
+    technologies: 'Technologies used',
+    problemTitle: 'Problem',
+    problemText: 'Manual coloring of graphics and animations is a time-consuming process. The goal of the project was to examine whether modern AI models can automatically recreate realistic colors from black-and-white images.',
+    datasetTitle: 'Dataset',
+    datasetItems: [
+        '5000 images from Kaggle',
+        '3000 additional frames from The Simpsons',
+        'Image processing in the LAB color space',
+        'Cartoon style selected for 2D animation use cases',
+    ],
+    implementedTitle: 'What was implemented',
+    implementedModels: [
+        { title: 'Base CNN model', text: 'The first architecture consisting of seven convolutional layers and Batch Normalization.' },
+        { title: 'U-Net', text: 'An architecture using skip connections to preserve image details during color reconstruction.' },
+        { title: 'Extended U-Net', text: '13 convolutional layers and over 1000 filters in the deepest layers.' },
+        { title: 'Transfer Learning', text: 'Use of pre-trained models to shorten training time and improve output quality.' },
+        { title: 'GAN', text: 'Implementation of CGAN, WGAN-GP, WGAN-GP + VGG16, WGAN-GP + VGG19, and WGAN-GP + EfficientNet.' },
+    ],
+    comparisonTitle: 'Model comparison',
+    materialsTitle: 'Technical materials',
+    materials: ['U-Net diagram', 'LAB space and training process', 'Model training chart'],
+    previous: 'Previous project',
+    next: 'Next project',
+}
 
-export function EngineeringWork(){
+export function EngineeringWork({ language, onLanguageChange }){
+    const isEnglish = language === 'en'
+
     return(
         <main className="min-h-screen bg-[#061018] text-slate-100">
             <div className="relative isolate overflow-hidden">
                 <BackgroundLines />
-                <SiteHeader />
-                <HeroSection />
-                <StatusSection />
-                <TechnologySection />
-                <DetailsSection />
-                <ProjectNavigation />
+                <SiteHeader language={language} onLanguageChange={onLanguageChange} isEnglish={isEnglish} />
+                <HeroSection isEnglish={isEnglish} />
+                <StatusSection isEnglish={isEnglish} />
+                <TechnologySection isEnglish={isEnglish} />
+                <DetailsSection isEnglish={isEnglish} />
+                <ProjectNavigation isEnglish={isEnglish} />
             </div>
         </main>
     )
 }
 
-function SiteHeader(){
+function SiteHeader({ language, onLanguageChange, isEnglish }){
+    const labels = isEnglish ? ENGINEERING_EN.nav : ['Projekty', 'O mnie', 'Umiejętności', 'Kontakt']
     const navItems = [
-        { label: 'Projekty', href: '/#projects', isActive: true },
-        { label: 'O mnie', href: '/#about' },
-        { label: 'Umiejętności', href: '/#skills' },
-        { label: 'Kontakt', href: '/#contact' },
+        { label: labels[0], href: '/#projects', isActive: true },
+        { label: labels[1], href: '/#about' },
+        { label: labels[2], href: '/#skills' },
+        { label: labels[3], href: '/#contact' },
     ]
 
     return(
@@ -93,7 +141,7 @@ function SiteHeader(){
                 <a
                     href="/"
                     className="group inline-flex items-center gap-4 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-4 focus:ring-offset-[#061018]"
-                    aria-label="Strona główna"
+                    aria-label={isEnglish ? ENGINEERING_EN.homeAria : 'Strona główna'}
                 >
                     <span className="flex h-9 w-9 items-center justify-center rounded-md border border-cyan-300/70 bg-cyan-300/10 text-sm font-bold text-cyan-200 shadow-[0_0_24px_rgba(34,211,238,0.16)]">
                         MM
@@ -118,12 +166,13 @@ function SiteHeader(){
                         </a>
                     ))}
                 </div>
+                <LanguageSwitch language={language} onLanguageChange={onLanguageChange} />
             </nav>
         </header>
     )
 }
 
-function HeroSection(){
+function HeroSection({ isEnglish }){
     return(
         <section className="px-5 pb-8 pt-12 sm:px-6 sm:pt-16 lg:pb-12 lg:pt-20">
             <div className="mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-[0.86fr_1.14fr] lg:items-center">
@@ -133,22 +182,20 @@ function HeroSection(){
                         className="inline-flex items-center gap-3 text-sm font-bold text-slate-300 transition hover:gap-4 hover:text-cyan-200 focus:outline-none focus:ring-2 focus:ring-cyan-200 focus:ring-offset-4 focus:ring-offset-[#061018]"
                     >
                         <ArrowLeftIcon />
-                        Wróć do projektów
+                        {isEnglish ? ENGINEERING_EN.back : 'Wróć do projektów'}
                     </a>
 
                     <p className="mt-12 text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                        Praca inżynierska
+                        {isEnglish ? ENGINEERING_EN.category : 'Praca inżynierska'}
                     </p>
                     <h1 className="mt-5 text-5xl font-extrabold leading-tight text-white sm:text-6xl">
                         AI Colorization
                     </h1>
                     <p className="mt-6 max-w-xl text-xl font-semibold leading-8 text-slate-200">
-                        Automatyczne kolorowanie obrazów czarno-białych przy użyciu sztucznej inteligencji.
+                        {isEnglish ? ENGINEERING_EN.summary : 'Automatyczne kolorowanie obrazów czarno-białych przy użyciu sztucznej inteligencji.'}
                     </p>
                     <p className="mt-6 max-w-xl text-base leading-8 text-slate-400">
-                        Projekt badawczy realizowany na Politechnice Krakowskiej. Celem było
-                        opracowanie i porównanie modeli głębokiego uczenia zdolnych do rekonstrukcji
-                        kolorów na podstawie obrazów w skali szarości.
+                        {isEnglish ? ENGINEERING_EN.intro : 'Projekt badawczy realizowany na Politechnice Krakowskiej. Celem było opracowanie i porównanie modeli głębokiego uczenia zdolnych do rekonstrukcji kolorów na podstawie obrazów w skali szarości.'}
                     </p>
 
                     <div className="mt-7 flex flex-wrap gap-2.5">
@@ -169,19 +216,19 @@ function HeroSection(){
                             rel="noreferrer"
                             className="inline-flex min-h-12 items-center justify-center gap-3 rounded-md bg-cyan-300 px-6 text-sm font-extrabold text-[#061018] shadow-[0_18px_42px_rgba(34,211,238,0.24)] transition hover:-translate-y-0.5 hover:bg-cyan-200 focus:outline-none focus:ring-2 focus:ring-cyan-200 focus:ring-offset-4 focus:ring-offset-[#061018]"
                         >
-                            Zobacz pracę
+                            {isEnglish ? ENGINEERING_EN.thesis : 'Zobacz pracę'}
                             <ExternalLinkIcon />
                         </a>
                     </div>
                 </div>
 
-                <HeroVisual />
+                <HeroVisual isEnglish={isEnglish} />
             </div>
         </section>
     )
 }
 
-function HeroVisual(){
+function HeroVisual({ isEnglish }){
     return(
         <div className="relative mx-auto w-full max-w-3xl pt-4">
             <div className="absolute inset-x-10 bottom-4 h-24 rounded-full bg-cyan-300/14 blur-3xl" />
@@ -189,7 +236,7 @@ function HeroVisual(){
                 <div className="grid gap-4 rounded-xl border border-cyan-100/10 bg-slate-950/45 p-5 md:grid-cols-2">
                     <div className="rounded-lg border border-cyan-100/10 bg-slate-900 p-4">
                         <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                            Model
+                            {isEnglish ? ENGINEERING_EN.modelLabel : 'Model'}
                         </p>
                         <img
                             src={unetDiagram}
@@ -213,7 +260,9 @@ function HeroVisual(){
     )
 }
 
-function StatusSection(){
+function StatusSection({ isEnglish }){
+    const statusItems = isEnglish ? ENGINEERING_EN.statusItems : STATUS_ITEMS
+
     return(
         <section className="px-5 py-3 sm:px-6">
             <div className="mx-auto grid w-full max-w-6xl gap-8 rounded-lg border border-cyan-100/10 bg-slate-950/24 p-6 shadow-[0_28px_80px_rgba(0,0,0,0.22)] backdrop-blur sm:p-8 lg:grid-cols-[0.75fr_1.25fr]">
@@ -222,15 +271,14 @@ function StatusSection(){
                         Status
                     </p>
                     <h2 className="mt-4 text-2xl font-extrabold leading-tight text-white sm:text-3xl">
-                        Projekt ukończony i obroniony
+                        {isEnglish ? ENGINEERING_EN.statusTitle : 'Projekt ukończony i obroniony'}
                     </h2>
                     <p className="mt-6 text-base leading-8 text-slate-400">
-                        Praca obejmowała analizę skuteczności różnych architektur AI w zadaniu
-                        kolorowania obrazów oraz ocenę ich potencjału praktycznego zastosowania.
+                        {isEnglish ? ENGINEERING_EN.statusText : 'Praca obejmowała analizę skuteczności różnych architektur AI w zadaniu kolorowania obrazów oraz ocenę ich potencjału praktycznego zastosowania.'}
                     </p>
                 </div>
                 <ul className="grid gap-4 sm:grid-cols-2">
-                    {STATUS_ITEMS.map((feature) => (
+                    {statusItems.map((feature) => (
                         <li key={feature} className="flex gap-3 text-sm leading-6 text-slate-300">
                             <CheckIcon />
                             <span>{feature}</span>
@@ -242,12 +290,12 @@ function StatusSection(){
     )
 }
 
-function TechnologySection(){
+function TechnologySection({ isEnglish }){
     return(
         <section className="px-5 py-3 sm:px-6">
             <div className="mx-auto w-full max-w-6xl rounded-lg border border-cyan-100/10 bg-slate-950/24 p-6 shadow-[0_28px_80px_rgba(0,0,0,0.22)] backdrop-blur sm:p-8">
                 <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                    Zastosowane technologie
+                    {isEnglish ? ENGINEERING_EN.technologies : 'Zastosowane technologie'}
                 </p>
                 <div className="mt-6 flex flex-wrap gap-3">
                     {['TensorFlow', 'Keras', 'OpenCV', 'Scikit-Learn', 'Matplotlib', 'Lightning AI', 'GPU Acceleration'].map((item) => (
@@ -264,28 +312,33 @@ function TechnologySection(){
     )
 }
 
-function DetailsSection(){
+function DetailsSection({ isEnglish }){
+    const datasetItems = isEnglish ? ENGINEERING_EN.datasetItems : DATASET_ITEMS
+    const implementedModels = isEnglish ? ENGINEERING_EN.implementedModels : IMPLEMENTED_MODELS
+    const materialTitles = isEnglish ? ENGINEERING_EN.materials : VISUAL_MATERIALS.map((item) => item.title)
+    const visualMaterials = VISUAL_MATERIALS.map((item, index) => ({
+        ...item,
+        title: materialTitles[index],
+    }))
+
     return(
         <section className="px-5 py-3 sm:px-6">
             <div className="mx-auto w-full max-w-6xl rounded-lg border border-cyan-100/10 bg-slate-950/24 p-6 shadow-[0_28px_80px_rgba(0,0,0,0.22)] backdrop-blur sm:p-8">
                 <div className="grid gap-10 lg:grid-cols-2">
                     <div>
                         <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                            Problem
+                            {isEnglish ? ENGINEERING_EN.problemTitle : 'Problem'}
                         </p>
                         <p className="mt-7 text-base leading-8 text-slate-300">
-                            Ręczne kolorowanie grafik i animacji jest procesem czasochłonnym.
-                            Celem projektu było zbadanie, czy nowoczesne modele AI są w stanie
-                            automatycznie odtwarzać realistyczne kolory na podstawie obrazów
-                            czarno-białych.
+                            {isEnglish ? ENGINEERING_EN.problemText : 'Ręczne kolorowanie grafik i animacji jest procesem czasochłonnym. Celem projektu było zbadanie, czy nowoczesne modele AI są w stanie automatycznie odtwarzać realistyczne kolory na podstawie obrazów czarno-białych.'}
                         </p>
                     </div>
                     <div>
                         <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                            Zbiór danych
+                            {isEnglish ? ENGINEERING_EN.datasetTitle : 'Zbiór danych'}
                         </p>
                         <ul className="mt-7 space-y-4">
-                            {DATASET_ITEMS.map((item) => (
+                            {datasetItems.map((item) => (
                                 <li key={item} className="flex gap-3 text-sm leading-6 text-slate-300">
                                     <CheckIcon />
                                     <span>{item}</span>
@@ -298,10 +351,10 @@ function DetailsSection(){
                 <div className="mt-12 grid gap-5 lg:grid-cols-[1fr_0.8fr]">
                     <div>
                         <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                            Co zostało zaimplementowane
+                            {isEnglish ? ENGINEERING_EN.implementedTitle : 'Co zostało zaimplementowane'}
                         </p>
                         <div className="mt-6 grid gap-4 md:grid-cols-2">
-                            {IMPLEMENTED_MODELS.map((model) => (
+                            {implementedModels.map((model) => (
                                 <article key={model.title} className="rounded-lg border border-cyan-100/10 bg-slate-950/30 p-5">
                                     <h3 className="text-base font-extrabold text-white">
                                         {model.title}
@@ -315,7 +368,7 @@ function DetailsSection(){
                     </div>
                     <div>
                         <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                            Porównanie modeli
+                            {isEnglish ? ENGINEERING_EN.comparisonTitle : 'Porównanie modeli'}
                         </p>
                         <div className="mt-6 overflow-hidden rounded-lg border border-cyan-100/10 bg-slate-950/30">
                             {MODEL_COMPARISON.map(([model, quality]) => (
@@ -334,10 +387,10 @@ function DetailsSection(){
 
                 <div className="mt-12">
                     <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-cyan-300">
-                        Materiały techniczne
+                        {isEnglish ? ENGINEERING_EN.materialsTitle : 'Materiały techniczne'}
                     </p>
                     <div className="mt-6 grid gap-5 lg:grid-cols-3">
-                        {VISUAL_MATERIALS.map((item) => (
+                        {visualMaterials.map((item) => (
                             <figure key={item.title} className="rounded-lg border border-cyan-100/10 bg-slate-950/30 p-4">
                                 <div className="overflow-hidden rounded-md bg-white">
                                     <img
@@ -358,7 +411,7 @@ function DetailsSection(){
     )
 }
 
-function ProjectNavigation(){
+function ProjectNavigation({ isEnglish }){
     return(
         <section className="px-5 pb-10 pt-3 sm:px-6">
             <div className="mx-auto grid w-full max-w-6xl gap-4 lg:grid-cols-2">
@@ -370,7 +423,7 @@ function ProjectNavigation(){
                         <ArrowLeftIcon />
                     </span>
                     <p className="mt-5 text-sm font-bold text-cyan-300">
-                        Poprzedni projekt
+                        {isEnglish ? ENGINEERING_EN.previous : 'Poprzedni projekt'}
                     </p>
                     <p className="mt-1 text-lg font-bold text-white">
                         BrainLift
@@ -384,7 +437,7 @@ function ProjectNavigation(){
                         <ArrowRightIcon />
                     </span>
                     <p className="mt-5 text-sm font-bold text-cyan-300">
-                        Następny projekt
+                        {isEnglish ? ENGINEERING_EN.next : 'Następny projekt'}
                     </p>
                     <p className="mt-1 text-lg font-bold text-white">
                         NovaDerm
